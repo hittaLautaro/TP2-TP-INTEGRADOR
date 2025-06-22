@@ -1,0 +1,31 @@
+{
+  "name": "tp2-integrador",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node .",
+    "watch": "node --watch .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hittaLautaro/plantilla-inicial-tp2.git"
+  },
+  "keywords": [
+    "node.js, express, mvc"
+  ],
+  "author": "Lautaro Hitta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hittaLautaro/plantilla-inicial-tp2/issues"
+  },
+  "homepage": "https://github.com/hittaLautaro/plantilla-inicial-tp2#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "joi": "^17.13.3",
+    "mongodb": "^6.17.0"
+  }
+}
