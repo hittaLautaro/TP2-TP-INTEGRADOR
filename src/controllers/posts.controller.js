@@ -74,7 +74,11 @@ class PostsController {
         return res.status(400).json({ error: "Post has invalid fields" });
       }
 
-      const result = await this.postsService.patchPost(id, updatedPost);
+      const result = await this.postsService.patchPost(
+        id,
+        updatedPost,
+        req.user.id
+      );
       res.status(200).json(result);
     } catch (error) {
       res.status(500).json({ error: error.message || "Error updating post" });
@@ -98,7 +102,11 @@ class PostsController {
           .json({ error: "Post has invalid or missing fields" });
       }
 
-      const result = await this.postsService.putPost(id, updatedPost);
+      const result = await this.postsService.putPost(
+        id,
+        updatedPost,
+        req.user.id
+      );
       res.status(200).json(result);
     } catch (error) {
       res
@@ -110,7 +118,7 @@ class PostsController {
   deletePost = async (req, res) => {
     try {
       const { id } = req.params;
-      const result = await this.postsService.deletePost(id);
+      const result = await this.postsService.deletePost(id, req.user.id);
       res.status(200).json(result);
     } catch (error) {
       res.status(500).json({ error: error.message || "Error deleting post" });

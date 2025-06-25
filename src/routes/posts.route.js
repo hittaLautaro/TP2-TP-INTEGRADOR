@@ -10,7 +10,7 @@ class Router {
 
   startRoutes() {
     this.router.get("/", verifyToken, this.postsController.getPosts);
-    this.router.get("/user", verifyToken, this.postsController.getPostsByUser);
+    this.router.get("/me", verifyToken, this.postsController.getPostsByUser);
     this.router.get("/:id", verifyToken, this.postsController.getPost);
 
     this.router.post("/", verifyToken, this.postsController.postPost);
