@@ -6,27 +6,34 @@ class PostsService {
   }
 
   getPost = async (id) => {
-    return await this.postsModel.getPost(id);
+    const post = await this.postsModel.findById(id);
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    return post;
   };
 
   getPosts = async () => {
-    return await this.postsModel.getPosts();
+    return await this.postsModel.findAll();
   };
 
-  postPost = async (newPost) => {
-    return await this.postsModel.postPost(newPost);
+  postPost = async (userId, newPost) => {
+    newPost.userId = userId;
+    return await this.postsModel.save(newPost);
   };
 
   putPost = async (id, newPost) => {
-    return await this.postsModel.putPost(id, newPost);
+    return await this.postsModel.update(id, newPost);
   };
 
   patchPost = async (id, updatedData) => {
-    return await this.postsModel.patchPost(id, updatedData);
+    return await this.postsModel.patch(id, updatedData);
   };
 
   deletePost = async (id) => {
-    return await this.postsModel.deletePost(id);
+    return await this.postsModel.delete(id);
   };
 }
 

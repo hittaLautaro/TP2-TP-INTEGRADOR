@@ -23,11 +23,7 @@ export const verifyToken = (req, res, next) => {
 export const generateToken = (user) => {
   const jwtSecret = process.env.JWT_SECRET;
 
-  return jwt.sign(
-    { id: user._id, email: user.email, name: user.name },
-    jwtSecret,
-    {
-      expiresIn: "30m",
-    }
-  );
+  return jwt.sign(user, jwtSecret, {
+    expiresIn: "30m",
+  });
 };

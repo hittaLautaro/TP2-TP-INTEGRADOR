@@ -6,24 +6,24 @@ class PostsModelMongo {
     this.db = MongoConnection.db;
   }
 
-  getPost = async (id) => {
+  findById = async (id) => {
     const posts = await this.db
       .collection("posts")
       .findOne({ _id: ObjectId.createFromHexString(id) });
     return posts;
   };
 
-  getPosts = async () => {
+  findAll = async () => {
     const posts = await this.db.collection("posts").find({}).toArray();
     return posts;
   };
 
-  postPost = async (post) => {
+  save = async (post) => {
     const newPost = await this.db.collection("posts").insertOne(post);
     return newPost;
   };
 
-  putPost = async (id, data) => {
+  update = async (id, data) => {
     delete data.userId;
 
     const update = await this.db
@@ -32,19 +32,24 @@ class PostsModelMongo {
     return update;
   };
 
-  patchPost = async (id, data) => {
+  patch = async (id, data) => {
     const update = await this.db
       .collection("posts")
       .updateOne({ _id: ObjectId.createFromHexString(id) }, { $set: data });
     return update;
   };
 
-  deletePost = async (id) => {
+  delete = async (id) => {
     const postDelete = await this.db
       .collection("posts")
       .deleteOne({ _id: ObjectId.createFromHexString(id) });
     return postDelete;
   };
+
+  // delete = async () => {
+  //   const result = await this.db.collection("posts").deleteMany({});
+  //   return result;
+  // };
 }
 
 export default PostsModelMongo;

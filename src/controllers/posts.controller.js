@@ -12,16 +12,18 @@ class PostsController {
       const post = await this.postsService.getPost(id);
       res.status(200).json(post);
     } catch (error) {
-      res.status(500).json({ error: "Error fetching post" });
+      res.status(500).json({ error: error.message || "Error fetching post" });
     }
   };
 
   getPosts = async (req, res) => {
     try {
       const posts = await this.postsService.getPosts();
+      console.log(req.user);
+
       res.status(200).json(posts);
     } catch (error) {
-      res.status(500).json({ error: "Error fetching posts" });
+      res.status(500).json({ error: error.message || "Error fetching posts" });
     }
   };
 
@@ -39,10 +41,14 @@ class PostsController {
         return res.status(400).json({ error: "Post has invalid fields" });
       }
 
-      const createdPost = await this.postsService.postPost(newPost);
+      const createdPost = await this.postsService.postPost(
+        req.user.id,
+        newPost
+      );
+
       res.status(201).json(createdPost);
     } catch (error) {
-      res.status(500).json({ error: "Error creating post" });
+      res.status(500).json({ error: error.message || "Error creating post" });
     }
   };
 
@@ -64,7 +70,7 @@ class PostsController {
       const result = await this.postsService.patchPost(id, updatedPost);
       res.status(200).json(result);
     } catch (error) {
-      res.status(500).json({ error: "Error updating post" });
+      res.status(500).json({ error: error.message || "Error updating post" });
     }
   };
 
@@ -88,7 +94,9 @@ class PostsController {
       const result = await this.postsService.putPost(id, updatedPost);
       res.status(200).json(result);
     } catch (error) {
-      res.status(500).json({ error: "Error updating/put post" });
+      res
+        .status(500)
+        .json({ error: error.message || "Error updating/put post" });
     }
   };
 
@@ -98,7 +106,7 @@ class PostsController {
       const result = await this.postsService.deletePost(id);
       res.status(200).json(result);
     } catch (error) {
-      res.status(500).json({ error: "Error deleting post" });
+      res.status(500).json({ error: error.message || "Error deleting post" });
     }
   };
 }
