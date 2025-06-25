@@ -1,12 +1,14 @@
 import { MongoClient } from "mongodb";
-import dotenv from "dotenv";
-dotenv.config();
 
 class MongoConnection {
-  static client = new MongoClient(process.env.MONGO_URL);
-  static db = this.client.db("tp2");
+  static client;
+  static db;
 
   static connection = async () => {
+    if (!this.client) {
+      this.client = new MongoClient(process.env.MONGO_URL);
+      this.db = this.client.db("tp2");
+    }
     await this.client.connect();
   };
 }

@@ -1,16 +1,21 @@
-import express from "express";
-import Router from "./routes/users.route.js";
 import dotenv from "dotenv";
-
 dotenv.config();
+
+import express from "express";
+import PostsRouter from "./routes/posts.route.js";
+import AuthRouter from "./routes/auth.route.js";
+import MongoConnection from "./models/connection.js";
 
 const app = express();
 const PORT = process.env.PORT;
 
+await MongoConnection.connection();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", new Router().startRoutes());
+app.use("/posts", new PostsRouter().startRoutes());
+app.use("/auth", new AuthRouter().startRoutes());
 
 app.use((req, res) => {
   res.status(404).json({

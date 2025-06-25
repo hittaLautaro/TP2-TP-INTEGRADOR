@@ -1,13 +1,14 @@
-import FacturasModelMongo from "./DAO/users.model.mongo.js";
-class FacturasFactory {
+import UsersModelMongo from "./DAO/users.model.mongo.js";
+
+class UsersFactory {
   static create(persistence) {
     switch (persistence) {
       case "mongo":
-        return new FacturasModelMongo();
+        return new UsersModelMongo();
       default:
-        return new FacturasModel();
+        return new UsersModelMongo();
     }
   }
 }
 
-export default FacturasFactory;
+export default UsersFactory;
