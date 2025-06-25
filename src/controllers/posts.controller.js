@@ -19,8 +19,15 @@ class PostsController {
   getPosts = async (req, res) => {
     try {
       const posts = await this.postsService.getPosts();
-      console.log(req.user);
+      res.status(200).json(posts);
+    } catch (error) {
+      res.status(500).json({ error: error.message || "Error fetching posts" });
+    }
+  };
 
+  getPostsByUser = async (req, res) => {
+    try {
+      const posts = await this.postsService.getPostsByUser(req.user.id);
       res.status(200).json(posts);
     } catch (error) {
       res.status(500).json({ error: error.message || "Error fetching posts" });

@@ -10,9 +10,10 @@ class Router {
 
   startRoutes() {
     this.router.get("/", verifyToken, this.postsController.getPosts);
-    this.router.post("/", verifyToken, this.postsController.postPost);
-
+    this.router.get("/user", verifyToken, this.postsController.getPostsByUser);
     this.router.get("/:id", verifyToken, this.postsController.getPost);
+
+    this.router.post("/", verifyToken, this.postsController.postPost);
     this.router.put("/:id", verifyToken, this.postsController.putPost);
     this.router.patch("/:id", verifyToken, this.postsController.patchPost);
     this.router.delete("/:id", verifyToken, this.postsController.deletePost);

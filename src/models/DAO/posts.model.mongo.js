@@ -18,6 +18,10 @@ class PostsModelMongo {
     return posts;
   };
 
+  findByUserId = async (userId) => {
+    return await this.db.collection("posts").find({ userId: userId }).toArray();
+  };
+
   save = async (post) => {
     const newPost = await this.db.collection("posts").insertOne(post);
     return newPost;
