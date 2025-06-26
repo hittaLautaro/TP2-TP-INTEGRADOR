@@ -50,10 +50,12 @@ class PostsModelMongo {
     return postDelete;
   };
 
-  // delete = async () => {
-  //   const result = await this.db.collection("posts").deleteMany({});
-  //   return result;
-  // };
+  deleteByUserId = async (userId) => {
+    const result = await this.db
+      .collection("posts")
+      .deleteMany({ userId: userId });
+    return result;
+  };
 }
 
 export default PostsModelMongo;
