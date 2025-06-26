@@ -1,7 +1,7 @@
 import MongoConnection from "../connection.js";
 import { ObjectId } from "mongodb";
 
-class AuthModelMongo {
+class UsersModelMongo {
   constructor() {
     this.db = MongoConnection.db;
   }
@@ -22,6 +22,10 @@ class AuthModelMongo {
   };
 
   delete = async (id) => {
+    const found = await this.db
+      .collection("users")
+      .findOne({ _id: ObjectId.createFromHexString(id) });
+    console.log("found:", found);
     const result = await this.db
       .collection("users")
       .deleteOne({ _id: ObjectId.createFromHexString(id) });
@@ -29,4 +33,4 @@ class AuthModelMongo {
   };
 }
 
-export default AuthModelMongo;
+export default UsersModelMongo;

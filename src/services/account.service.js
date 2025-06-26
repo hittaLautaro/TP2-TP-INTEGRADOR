@@ -19,9 +19,17 @@ class AccountService {
       throw new Error("Invalid password");
     }
 
-    await this.postsModel.deleteByUserId(userId);
+    console.log(await this.postsModel.deleteByUserId(userId));
 
-    return await this.usersModel.delete(userId);
+    const res = await this.usersModel.delete(userId);
+
+    console.log("User deleted:", res);
+
+    if (!res) {
+      throw new Error("Error deleting user");
+    }
+
+    return res;
   };
 }
 

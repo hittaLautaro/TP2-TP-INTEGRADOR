@@ -11,6 +11,7 @@ class AccountController {
       await this.accountService.delete(req.user.id, password);
       return res.status(200).json({ message: "Account deleted successfully" });
     } catch (error) {
+      console.error("Error deleting account:", error);
       return res
         .status(500)
         .json({ error: error.message || "Error deleting account" });

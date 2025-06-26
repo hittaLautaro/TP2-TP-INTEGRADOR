@@ -2,7 +2,7 @@ import UsersFactory from "../models/UsersFactory.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../middleware/auth.middleware.js";
 
-class UsersService {
+class AuthService {
   constructor() {
     this.userModel = UsersFactory.create(process.env.PERSISTENCE);
   }
@@ -56,4 +56,4 @@ class UsersService {
   };
 }
 
-export default UsersService;
+export default AuthService;
