@@ -47,6 +47,15 @@ class AuthController {
       res.status(500).json({ error: error.message || "Error signing up" });
     }
   };
+
+  logout = async (req, res) => {
+    try {
+      const result = await this.authService.logout(req.user.id);
+      res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+      res.status(500).json({ error: error.message || "Error logging out" });
+    }
+  };
 }
 
 export default AuthController;

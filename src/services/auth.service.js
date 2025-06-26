@@ -20,12 +20,16 @@ class AuthService {
       throw new Error("Invalid Credentials");
     }
 
+    const token = generateToken({
+      id: user._id.toString(),
+      email: user.email,
+      name: user.name,
+    });
+
+    await this.userModel.updateActive(user._id.toString(), true);
+
     return {
-      token: generateToken({
-        id: user._id.toString(),
-        email: user.email,
-        name: user.name,
-      }),
+      token: token,
       user: {
         id: user._id.toString(),
         email: user.email,
@@ -48,11 +52,24 @@ class AuthService {
       email,
       ...rest,
       password: hashedPassword,
+      isActive: false,
     };
 
     const createdUser = await this.userModel.save(newUser);
 
     return createdUser;
+  };
+
+  logout = async (userId) => {
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await this.userModel.updateActive(user._id.toString(), false);
+
+    return user;
   };
 }
 

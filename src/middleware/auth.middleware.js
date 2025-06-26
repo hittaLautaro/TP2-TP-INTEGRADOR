@@ -21,6 +21,10 @@ export const verifyToken = async (req, res, next) => {
       return res.status(401).json({ error: "User no longer exists" });
     }
 
+    if (!user.isActive) {
+      return res.status(401).json({ error: "User is not logged in" });
+    }
+
     console.log("decoded:", decoded);
 
     req.user = decoded;

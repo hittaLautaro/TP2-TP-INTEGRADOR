@@ -31,6 +31,15 @@ class UsersModelMongo {
       .deleteOne({ _id: ObjectId.createFromHexString(id) });
     return result.deletedCount > 0;
   };
+
+  updateActive = async (userId, isActive) => {
+    return await this.db
+      .collection("users")
+      .updateOne(
+        { _id: ObjectId.createFromHexString(userId) },
+        { $set: { isActive } }
+      );
+  };
 }
 
 export default UsersModelMongo;
