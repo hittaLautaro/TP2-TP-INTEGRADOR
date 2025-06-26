@@ -11,13 +11,13 @@ class UsersService {
     const user = await this.userModel.findByEmail(email);
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("Invalid Credentials");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new Error("Invalid password");
+      throw new Error("Invalid Credentials");
     }
 
     return {
