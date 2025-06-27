@@ -1,307 +1,311 @@
 {
-  "info": {
-    "_postman_id": "e0305eb3-4d7e-40fc-9774-34ada38b3c31",
-    "name": "TP INTEGRADOR - API Copy",
-    "description": "---\n\n## Entidades\n\n---\n\n# `User:`\n\n- `_id`\n    \n- `name`\n    \n- `email`\n    \n- `password`\n    \n- `isActive`\n    \n\n`Post:`\n\n- `_id`\n    \n- `title`\n    \n- `content`\n    \n- `userId`\n    \n\n---\n\n## Requests\n\n---\n\n#### Auth / Autenticación `(/auth)`\n\n1. `(/signup) Signup request`\n    \n    Crea el nuevo usuario con `name`, `email`, `password` y `isActive = false`.\n    \n2. `(/login) Login request`\n    \n    Verifica `email` y `password`. Si están correctas, devuelve un `accessToken`.\n    \n3. `(/logout) Logout request`\n    \n    Invalida el token actual. No modifica datos del usuario.\n    \n\n---\n\n#### Posts / Publicaciones `(/posts)`\n\nTodos estos endpoints requieren autenticación con `accessToken`.\n\n1. `(/) Find all posts`\n    \n    Devuelve una lista de posts.\n    \n2. `(/me) Find by logged user`\n    \n    Devuelve todos los posts creados por el usuario autenticado.\n    \n3. `(/:id) Find post by id`\n    \n    Devuelve un post por su `_id`.\n    \n4. `(/) Submit a post`\n    \n    Crea un nuevo post asociado al usuario autenticado.\n    \n5. `(/:id) Update (PUT) a post (Only yours)`\n    \n    Reemplaza completamente un post existente. Solo permitido si pertenece al usuario autenticado.\n    \n6. `(/:id) Update (PATCH) a post (Only yours)`\n    \n    Actualiza parcialmente un post existente. Solo permitido si pertenece al usuario autenticado.\n    \n7. `(/:id) Delete a post (Only yours)`\n    \n    Elimina un post existente. Solo permitido si pertenece al usuario autenticado.\n    \n\n---\n\n#### Account / Cuenta `(/account)`\n\n1. `(/delete) Delete your account`\n    \n    Elimina al usuario autenticado y todos sus datos. Requiere `password` en el body. Esto elimina todos sus posts.\n    \n\n---",
-    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-    "_exporter_id": "38801312"
-  },
-  "item": [
-    {
-      "name": " --- Auth / Autenticación ---",
-      "item": [
-        {
-          "name": "Signup request",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"user\",\r\n    \"email\": \"user@gmail.com\",\r\n    \"password\": \"pass1234\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": "http://localhost:8080/auth/signup"
-          },
-          "response": []
-        },
-        {
-          "name": "Login request",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const jsonData = pm.response.json();\r",
-                  "\r",
-                  "if (jsonData.data && jsonData.data.token) {\r",
-                  "  pm.collectionVariables.set(\"accessToken\", jsonData.data.token);\r",
-                  "}\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"password\": \"pass1234\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": "http://localhost:8080/auth/login"
-          },
-          "response": []
-        },
-        {
-          "name": "Logout request",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": "http://localhost:8080/auth/logout"
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "--- Posts / Publicaciones ---",
-      "item": [
-        {
-          "name": "Find all posts",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": "http://localhost:8080/posts/"
-          },
-          "response": []
-        },
-        {
-          "name": "Find by authenticated user",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "GET",
-            "header": [],
-            "url": "http://localhost:8080/posts/me"
-          },
-          "response": []
-        },
-        {
-          "name": "Find by id",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"title\":\"test-title\",\r\n    \"content\":\"test-content-1-1-1-1-1\"\r\n}"
-            },
-            "url": "http://localhost:8080/posts/685ddb6d79e29504fe222103"
-          },
-          "response": []
-        },
-        {
-          "name": "Submit a post",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"title\":\"What is Lorem Ipsum?\",\r\n    \"content\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ultrices mattis lectus, eu efficitur ligula sollicitudin sed. Donec ut est id turpis posuere efficitur. Suspendisse at maximus turpis. Cras interdum sem ut volutpat hendrerit. Aliquam fermentum nibh vel est egestas pellentesque. Nam ultricies velit ac eros vulputate lobortis. Vivamus et suscipit dolor. Etiam volutpat maximus magna vel porta. Sed hendrerit, tortor ac iaculis varius, est lorem gravida dui, eget dictum velit diam a tellus.\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": "http://localhost:8080/posts/"
-          },
-          "response": []
-        },
-        {
-          "name": "Update a post (Authorized)",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"title\":\"New Title by PUT\",\r\n    \"content\":\"New Content by PUT\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": "http://localhost:8080/posts/685ddb6d79e29504fe222103"
-          },
-          "response": []
-        },
-        {
-          "name": "Update a post (Authorized)",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"content\":\"New Content by PATCH\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": "http://localhost:8080/posts/685ddb6d79e29504fe222103"
-          },
-          "response": []
-        },
-        {
-          "name": "Delete a post (Authorized)",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "DELETE",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": "http://localhost:8080/posts/685ddb6d79e29504fe222103"
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "--- Account / Cuenta ---",
-      "item": [
-        {
-          "name": "Delete your account, requires password",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "token": "{{accessToken}}"
-              }
-            },
-            "method": "DELETE",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"password\":\"pass1234\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": "http://localhost:8080/account"
-          },
-          "response": []
-        }
-      ]
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "packages": {},
-        "exec": [""]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "packages": {},
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "accessToken",
-      "value": ""
-    }
-  ]
+	"info": {
+		"_postman_id": "58af1f4a-c43e-4b07-8f67-384c16cb0433",
+		"name": "TP INTEGRADOR - API / DOCS",
+		"description": "---\n\n## Entidades\n\n---\n\n# `User:`\n\n- `_id`\n    \n- `name`\n    \n- `email`\n    \n- `password`\n    \n- `isActive`\n    \n\n`Post:`\n\n- `_id`\n    \n- `title`\n    \n- `content`\n    \n- `userId`\n    \n\n---\n\n## Requests\n\n---\n\n#### Auth / Autenticación `(/auth)`\n\n1. `(/signup) Signup request`\n    \n    Crea el nuevo usuario con `name`, `email`, `password` y `isActive = false`.\n    \n2. `(/login) Login request`\n    \n    Verifica `email` y `password`. Si están correctas, devuelve un `accessToken`.\n    \n3. `(/logout) Logout request`\n    \n    Invalida el token actual. No modifica datos del usuario.\n    \n\n---\n\n#### Posts / Publicaciones `(/posts)`\n\nTodos estos endpoints requieren autenticación con `accessToken`.\n\n1. `(/) Find all posts`\n    \n    Devuelve una lista de posts.\n    \n2. `(/me) Find by logged user`\n    \n    Devuelve todos los posts creados por el usuario autenticado.\n    \n3. `(/:id) Find post by id`\n    \n    Devuelve un post por su `_id`.\n    \n4. `(/) Submit a post`\n    \n    Crea un nuevo post asociado al usuario autenticado.\n    \n5. `(/:id) Update (PUT) a post (Only yours)`\n    \n    Reemplaza completamente un post existente. Solo permitido si pertenece al usuario autenticado.\n    \n6. `(/:id) Update (PATCH) a post (Only yours)`\n    \n    Actualiza parcialmente un post existente. Solo permitido si pertenece al usuario autenticado.\n    \n7. `(/:id) Delete a post (Only yours)`\n    \n    Elimina un post existente. Solo permitido si pertenece al usuario autenticado.\n    \n\n---\n\n#### Account / Cuenta `(/account)`\n\n1. `(/delete) Delete your account`\n    \n    Elimina al usuario autenticado y todos sus datos. Requiere `password` en el body. Esto elimina todos sus posts.\n    \n\n---",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38801312"
+	},
+	"item": [
+		{
+			"name": " --- Auth / Autenticación ---",
+			"item": [
+				{
+					"name": "Signup request",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"user\",\r\n    \"email\": \"user@gmail.com\",\r\n    \"password\": \"pass1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/auth/signup"
+					},
+					"response": []
+				},
+				{
+					"name": "Login request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"if (jsonData.data && jsonData.data.token) {\r",
+									"  pm.collectionVariables.set(\"accessToken\", jsonData.data.token);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"password\": \"pass1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:8080/auth/logout"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "--- Posts / Publicaciones ---",
+			"item": [
+				{
+					"name": "Find all posts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:8080/posts/"
+					},
+					"response": []
+				},
+				{
+					"name": "Find by authenticated user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/posts/me"
+					},
+					"response": []
+				},
+				{
+					"name": "Find by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"test-title\",\r\n    \"content\":\"test-content-1-1-1-1-1\"\r\n}"
+						},
+						"url": "http://localhost:8080/posts/685ddb6d79e29504fe222103"
+					},
+					"response": []
+				},
+				{
+					"name": "Submit a post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"What is Lorem Ipsum?\",\r\n    \"content\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ultrices mattis lectus, eu efficitur ligula sollicitudin sed. Donec ut est id turpis posuere efficitur. Suspendisse at maximus turpis. Cras interdum sem ut volutpat hendrerit. Aliquam fermentum nibh vel est egestas pellentesque. Nam ultricies velit ac eros vulputate lobortis. Vivamus et suscipit dolor. Etiam volutpat maximus magna vel porta. Sed hendrerit, tortor ac iaculis varius, est lorem gravida dui, eget dictum velit diam a tellus.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/posts/"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a post (Authorized)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"New Title by PUT\",\r\n    \"content\":\"New Content by PUT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/posts/685ddb6d79e29504fe222103"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a post (Authorized)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\":\"New Content by PATCH\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/posts/685ddb6d79e29504fe222103"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a post (Authorized)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/posts/685ddb6d79e29504fe222103"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "--- Account / Cuenta ---",
+			"item": [
+				{
+					"name": "Delete your account, requires password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"pass1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/account"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": ""
+		}
+	]
 }
