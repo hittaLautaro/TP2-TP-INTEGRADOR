@@ -15,10 +15,10 @@
 
 3. **Crear el .env en el root del proyecto**  
      ```bash
-     PORT=1234 
-     MONGO_URL=mongodb+srv://SECRET:SECRET@SECRET.asdasd.mongodb.net/?retryWrites=true&w=majority&appName=SECRET
+     PORT={COMPLETAR}
+     MONGO_URL={COMPLETAR}
      PERSISTENCE=mongo <- DEJAR ASI
-     JWT_SECRET=secret
+     JWT_SECRET={COMPLETAR}
      ```
      
 4. **Correr la aplicación**  
