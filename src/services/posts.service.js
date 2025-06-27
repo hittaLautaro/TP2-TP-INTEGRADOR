@@ -8,7 +8,9 @@ class PostsService {
   getPost = async (id) => {
     const post = await this.postsModel.findById(id);
     if (!post) {
-      throw new Error("Post not found");
+      const error = new Error("Post not found");
+      error.statusCode = 404;
+      throw error;
     }
     return post;
   };
@@ -34,10 +36,14 @@ class PostsService {
   putPost = async (id, newPost, userId) => {
     const post = await this.postsModel.findById(id);
     if (!post) {
-      throw new Error("Post not found");
+      const error = new Error("Post not found");
+      error.statusCode = 404;
+      throw error;
     }
     if (post.userId.toString() !== userId) {
-      throw new Error("Unauthorized to update this post");
+      const error = new Error("Forbidden");
+      error.statusCode = 403;
+      throw error;
     }
 
     return await this.postsModel.update(id, newPost);
@@ -46,10 +52,14 @@ class PostsService {
   patchPost = async (id, updatedData, userId) => {
     const post = await this.postsModel.findById(id);
     if (!post) {
-      throw new Error("Post not found");
+      const error = new Error("Post not found");
+      error.statusCode = 404;
+      throw error;
     }
     if (post.userId.toString() !== userId) {
-      throw new Error("Unauthorized to update this post");
+      const error = new Error("Forbidden");
+      error.statusCode = 403;
+      throw error;
     }
 
     return await this.postsModel.patch(id, updatedData);
@@ -57,12 +67,17 @@ class PostsService {
 
   deletePost = async (id, userId) => {
     const post = await this.postsModel.findById(id);
+
     if (!post) {
-      throw new Error("Post not found");
+      return;
     }
+
     if (post.userId.toString() !== userId) {
-      throw new Error("Unauthorized to delete this post");
+      const error = new Error("Forbidden");
+      error.statusCode = 403;
+      throw error;
     }
+
     return await this.postsModel.delete(id);
   };
 }

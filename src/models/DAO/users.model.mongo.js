@@ -7,7 +7,6 @@ class UsersModelMongo {
   }
 
   findById = async (id) => {
-    console.log("findById", id);
     return await this.db
       .collection("users")
       .findOne({ _id: ObjectId.createFromHexString(id) });
@@ -25,7 +24,6 @@ class UsersModelMongo {
     const found = await this.db
       .collection("users")
       .findOne({ _id: ObjectId.createFromHexString(id) });
-    console.log("found:", found);
     const result = await this.db
       .collection("users")
       .deleteOne({ _id: ObjectId.createFromHexString(id) });

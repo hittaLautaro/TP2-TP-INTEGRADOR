@@ -10,7 +10,6 @@ describe("Auth integration tests", () => {
       email: "testtesttest@gmail.com",
       password: "test123123",
     });
-    console.log("Response:", response.body);
     expect(response.status).to.equal(201);
   });
 
@@ -20,7 +19,6 @@ describe("Auth integration tests", () => {
       email: "tes",
       password: "te",
     });
-    console.log("Response:", response.body);
     expect(response.status).to.equal(400);
   });
 });

@@ -12,7 +12,11 @@ class PostsController {
       const post = await this.postsService.getPost(id);
       res.status(200).json(post);
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error fetching post" });
+      if (error.statusCode === 404) {
+        return res.status(404).json({ error: error.message });
+      }
+
+      res.status(500).json({ error: "Error fetching post" });
     }
   };
 
@@ -21,7 +25,7 @@ class PostsController {
       const posts = await this.postsService.getPosts();
       res.status(200).json(posts);
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error fetching posts" });
+      res.status(500).json({ error: "Error fetching posts" });
     }
   };
 
@@ -30,7 +34,7 @@ class PostsController {
       const posts = await this.postsService.getPostsByUser(req.user.id);
       res.status(200).json(posts);
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error fetching posts" });
+      res.status(500).json({ error: "Error fetching posts" });
     }
   };
 
@@ -55,7 +59,7 @@ class PostsController {
 
       res.status(201).json(createdPost);
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error creating post" });
+      res.status(500).json({ error: "Error creating post" });
     }
   };
 
@@ -81,7 +85,13 @@ class PostsController {
       );
       res.status(200).json(result);
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error updating post" });
+      if (error.statusCode === 404) {
+        return res.status(404).json({ error: error.message });
+      }
+      if (error.statusCode === 403) {
+        return res.status(403).json({ error: error.message });
+      }
+      res.status(500).json({ error: "Error updating post" });
     }
   };
 
@@ -109,19 +119,26 @@ class PostsController {
       );
       res.status(200).json(result);
     } catch (error) {
-      res
-        .status(500)
-        .json({ error: error.message || "Error updating/put post" });
+      if (error.statusCode === 404) {
+        return res.status(404).json({ error: error.message });
+      }
+      if (error.statusCode === 403) {
+        return res.status(403).json({ error: error.message });
+      }
+      res.status(500).json({ error: "Error updating post" });
     }
   };
 
   deletePost = async (req, res) => {
     try {
       const { id } = req.params;
-      const result = await this.postsService.deletePost(id, req.user.id);
-      res.status(200).json(result);
+      await this.postsService.deletePost(id, req.user.id);
+      res.status(204).send();
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error deleting post" });
+      if (error.statusCode === 403) {
+        return res.status(403).json({ error: error.message });
+      }
+      res.status(500).json({ error: "Error deleting post" });
     }
   };
 }

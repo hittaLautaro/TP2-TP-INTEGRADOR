@@ -23,7 +23,10 @@ class AuthController {
       const data = await this.authService.login(loginReq);
       res.status(201).json({ message: "Logged in successfully", data: data });
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error logging in" });
+      if (error.statusCode === 401) {
+        return res.status(401).json({ error: error.message });
+      }
+      res.status(500).json({ error: "Error logging in" });
     }
   };
 
@@ -44,7 +47,10 @@ class AuthController {
       await this.authService.signup(newUser);
       res.status(201).json({ message: "Signed up successfully" });
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error signing up" });
+      if (error.statusCode === 400) {
+        return res.status(400).json({ error: error.message });
+      }
+      res.status(500).json({ error: "Error signing up" });
     }
   };
 
@@ -53,7 +59,7 @@ class AuthController {
       const result = await this.authService.logout(req.user.id);
       res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
-      res.status(500).json({ error: error.message || "Error logging out" });
+      res.status(500).json({ error: "Error logging out" });
     }
   };
 }

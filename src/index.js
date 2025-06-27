@@ -22,7 +22,7 @@ app.use("/account", new AccountRouter().startRoutes());
 app.use((req, res) => {
   res.status(404).json({
     code: 404,
-    message: "Recurso no encontrado.",
+    message: "Not found.",
   });
 });
 

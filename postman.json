@@ -40,7 +40,7 @@
                 "exec": [
                   "const jsonData = pm.response.json();\r",
                   "\r",
-                  "if (jsonData.data.token) {\r",
+                  "if (jsonData.data && jsonData.data.token) {\r",
                   "  pm.collectionVariables.set(\"accessToken\", jsonData.data.token);\r",
                   "}\r",
                   ""

@@ -6,7 +6,7 @@ export const verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Token is missing" });
+    throw new Error();
   }
 
   const token = authHeader.split(" ")[1];
@@ -18,20 +18,16 @@ export const verifyToken = async (req, res, next) => {
     const user = await usersModel.findById(decoded.id);
 
     if (!user) {
-      return res.status(401).json({ error: "User no longer exists" });
+      throw new Error();
     }
 
     if (!user.isActive) {
-      return res.status(401).json({ error: "User is not logged in" });
+      throw new Error();
     }
-
-    console.log("decoded:", decoded);
-
     req.user = decoded;
     next();
   } catch (err) {
-    console.error("Token verification failed:", err);
-    return res.status(401).json({ error: "Invalid or expired token" });
+    return res.status(401).json({ error: "Unauthorized" });
   }
 };
 

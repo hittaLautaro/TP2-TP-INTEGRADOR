@@ -11,13 +11,17 @@ class AuthService {
     const user = await this.userModel.findByEmail(email);
 
     if (!user) {
-      throw new Error("Invalid Credentials");
+      const error = new Error("Invalid Credentials");
+      error.statusCode = 401;
+      throw error;
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new Error("Invalid Credentials");
+      const error = new Error("Invalid Credentials");
+      error.statusCode = 401;
+      throw error;
     }
 
     const token = generateToken({
@@ -44,7 +48,9 @@ class AuthService {
     const user = await this.userModel.findByEmail(email);
 
     if (user) {
-      throw new Error("User already exists");
+      const error = new Error("User with that email already exists");
+      error.statusCode = 400;
+      throw error;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
