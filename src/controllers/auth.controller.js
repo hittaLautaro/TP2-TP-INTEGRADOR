@@ -20,8 +20,8 @@ class AuthController {
         return res.status(400).json({ error: "User has invalid fields" });
       }
 
-      const response = await this.authService.login(loginReq);
-      res.status(201).json(response);
+      const data = await this.authService.login(loginReq);
+      res.status(201).json({ message: "Logged in successfully", data: data });
     } catch (error) {
       res.status(500).json({ error: error.message || "Error logging in" });
     }
@@ -41,8 +41,8 @@ class AuthController {
         return res.status(400).json({ error: "User has invalid fields" });
       }
 
-      const createdUser = await this.authService.signup(newUser);
-      res.status(201).json(createdUser);
+      await this.authService.signup(newUser);
+      res.status(201).json({ message: "Signed up successfully" });
     } catch (error) {
       res.status(500).json({ error: error.message || "Error signing up" });
     }

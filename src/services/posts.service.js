@@ -27,7 +27,8 @@ class PostsService {
 
   postPost = async (userId, newPost) => {
     newPost.userId = userId;
-    return await this.postsModel.save(newPost);
+    await this.postsModel.save(newPost);
+    return newPost;
   };
 
   putPost = async (id, newPost, userId) => {
@@ -38,6 +39,7 @@ class PostsService {
     if (post.userId.toString() !== userId) {
       throw new Error("Unauthorized to update this post");
     }
+
     return await this.postsModel.update(id, newPost);
   };
 
@@ -49,6 +51,7 @@ class PostsService {
     if (post.userId.toString() !== userId) {
       throw new Error("Unauthorized to update this post");
     }
+
     return await this.postsModel.patch(id, updatedData);
   };
 

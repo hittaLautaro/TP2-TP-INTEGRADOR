@@ -23,24 +23,32 @@ class PostsModelMongo {
   };
 
   save = async (post) => {
-    const newPost = await this.db.collection("posts").insertOne(post);
-    return newPost;
+    const result = await this.db.collection("posts").insertOne(post);
+    return result;
   };
 
   update = async (id, data) => {
     delete data.userId;
-
-    const update = await this.db
+    const result = await this.db
       .collection("posts")
-      .updateOne({ _id: ObjectId.createFromHexString(id) }, { $set: data });
-    return update;
+      .findOneAndUpdate(
+        { _id: ObjectId.createFromHexString(id) },
+        { $set: data },
+        { returnDocument: "after" }
+      );
+
+    return result;
   };
 
   patch = async (id, data) => {
-    const update = await this.db
+    const result = await this.db
       .collection("posts")
-      .updateOne({ _id: ObjectId.createFromHexString(id) }, { $set: data });
-    return update;
+      .findOneAndUpdate(
+        { _id: ObjectId.createFromHexString(id) },
+        { $set: data },
+        { returnDocument: "after" }
+      );
+    return result;
   };
 
   delete = async (id) => {
