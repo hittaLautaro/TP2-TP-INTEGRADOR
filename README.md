@@ -28,7 +28,7 @@
    
 5. **Importar colección Postman para probar la API**  
    - Abrir Postman y seleccionar `Import`.  
-   - Elige el archivo JSON de la colección que se encuentra en el root llamado ``TP INTEGRADOR - API.postman_collection``.  
+   - Elige el archivo JSON de la colección que se encuentra en el root llamado [`postman.json`](./postman.json).  
    - Listo para usar los endpoints, recorda registrarte primero y despues loguearte para que se setee el accessToken.
 
 ---
