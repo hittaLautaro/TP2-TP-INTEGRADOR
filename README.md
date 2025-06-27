@@ -72,7 +72,7 @@
 
 3. `(/logout) Logout request`
 
-    Invalida el token actual. No modifica datos del usuario.
+    Setea el campo `isActive` del usuario autenticado a `false`
 
 ---
 
@@ -82,7 +82,7 @@ Todos estos endpoints requieren autenticación con `accessToken`.
 
 1. `(/) Find all posts`
 
-    Devuelve una lista de posts.
+    Devuelve todos los posts.
 
 2. `(/me) Find by logged user`
 
@@ -96,15 +96,15 @@ Todos estos endpoints requieren autenticación con `accessToken`.
 
     Crea un nuevo post asociado al usuario autenticado.
 
-5. `(/:id) Update (PUT) a post (Only yours)`
+5. `(/:id) Update (PUT) a post`
 
     Reemplaza completamente un post existente. Solo permitido si pertenece al usuario autenticado.
 
-6. `(/:id) Update (PATCH) a post (Only yours)`
+6. `(/:id) Update (PATCH) a post`
 
     Actualiza parcialmente un post existente. Solo permitido si pertenece al usuario autenticado.
 
-7. `(/:id) Delete a post (Only yours)`
+7. `(/:id) Delete a post`
 
     Elimina un post existente. Solo permitido si pertenece al usuario autenticado.
 
@@ -114,6 +114,6 @@ Todos estos endpoints requieren autenticación con `accessToken`.
 
 1. `(/delete) Delete your account`
 
-    Elimina al usuario autenticado y todos sus datos. Requiere `password` en el body. Esto elimina todos sus posts.
+    Elimina al usuario autenticado y sus posts. Requiere `password` en el body.
 
 ---
