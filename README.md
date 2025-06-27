@@ -39,7 +39,7 @@
 
 ---
 
-# `User:`
+#### `User:`
 
 - `_id`
 - `name`
@@ -47,7 +47,7 @@
 - `password`
 - `isActive`
 
-# `Post:`
+#### `Post:`
 
 - `_id`
 - `title`
